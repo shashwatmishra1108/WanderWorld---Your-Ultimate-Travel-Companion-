@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WanderWorld — Your Ultimate Travel Companion</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --gold: #c9a84c;
+      --gold-light: #f0d080;
+      --dark: #0d0d0d;
+      --dark2: #181818;
+      --dark3: #232323;
+      --card: #1a1a1a;
+      --text: #f0ece0;
+      --muted: #999;
+      --accent: #e07b39;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--dark);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 60px;
+      background: rgba(13,13,13,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; font-weight: 900;
+      color: var(--gold);
+      letter-spacing: 2px;
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--muted);
+      font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--gold); color: var(--dark);
+      border: none; padding: 10px 24px; border-radius: 50px;
+      font-weight: 600; font-size: 0.85rem; cursor: pointer;
+      letter-spacing: 1px; transition: transform 0.2s, background 0.2s;
+    }
+    .nav-cta:hover { background: var(--gold-light); transform: scale(1.05); }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.12) 0%, transparent 70%),
+        linear-gradient(160deg, #0d0d0d 0%, #1a1200 50%, #0d0d0d 100%);
+    }
+    .hero-bg-text {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(80px, 18vw, 220px);
+      font-weight: 900; color: rgba(201,168,76,0.04);
+      white-space: nowrap; pointer-events: none;
+      animation: drift 12s ease-in-out infinite alternate;
+    }
+    @keyframes drift { from { transform: translate(-50%, -50%) scale(1); } to { transform: translate(-50%, -52%) scale(1.03); } }
+
+    .hero-content { position: relative; z-index: 2; padding: 20px; }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(201,168,76,0.15);
+      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold); font-size: 0.75rem;
+      letter-spacing: 3px; text-transform: uppercase;
+      padding: 6px 20px; border-radius: 50px; margin-bottom: 28px;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 7vw, 6rem);
+      line-height: 1.05; font-weight: 900;
+      animation: fadeUp 0.9s 0.1s ease both;
+    }
+    .hero h1 em { color: var(--gold); font-style: normal; }
+    .hero p {
+      font-size: 1.1rem; color: var(--muted);
+      max-width: 520px; margin: 20px auto 36px;
+      animation: fadeUp 1s 0.2s ease both;
+    }
+    .hero-btns {
+      display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;
+      animation: fadeUp 1s 0.3s ease both;
+    }
+    .btn-primary {
+      background: var(--gold); color: var(--dark);
+      padding: 14px 36px; border-radius: 50px; border: none;
+      font-weight: 700; font-size: 0.95rem; cursor: pointer;
+      transition: all 0.3s; letter-spacing: 0.5px;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 12px 30px rgba(201,168,76,0.3); }
+    .btn-outline {
+      background: transparent; color: var(--text);
+      padding: 14px 36px; border-radius: 50px;
+      border: 1px solid rgba(255,255,255,0.2);
+      font-weight: 500; font-size: 0.95rem; cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+    /* Search Bar */
+    .search-bar {
+      margin-top: 48px;
+      display: flex; align-items: center;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 60px; padding: 8px 8px 8px 24px;
+      max-width: 580px; margin-left: auto; margin-right: auto;
+      animation: fadeUp 1s 0.4s ease both;
+    }
+    .search-bar input {
+      flex: 1; background: none; border: none; outline: none;
+      color: var(--text); font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+    }
+    .search-bar input::placeholder { color: var(--muted); }
+    .search-bar button {
+      background: var(--gold); color: var(--dark);
+      border: none; padding: 12px 28px; border-radius: 50px;
+      font-weight: 700; cursor: pointer; font-size: 0.9rem;
+      transition: background 0.2s;
+    }
+    .search-bar button:hover { background: var(--gold-light); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── SECTION HEADER ─── */
+    .section-header { text-align: center; margin-bottom: 56px; }
+    .section-tag {
+      display: inline-block; color: var(--gold);
+      font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .section-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem); font-weight: 700;
+    }
+    .section-header p { color: var(--muted); margin-top: 12px; font-size: 1rem; }
+
+    /* ─── CATEGORIES ─── */
+    #categories {
+      padding: 100px 60px;
+      background: var(--dark2);
+    }
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 20px; max-width: 1100px; margin: 0 auto;
+    }
+    .cat-card {
+      background: var(--card);
+      border: 1px solid rgba(201,168,76,0.1);
+      border-radius: 20px; padding: 32px 20px;
+      text-align: center; cursor: pointer;
+      transition: all 0.35s; position: relative; overflow: hidden;
+    }
+    .cat-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(circle at 50% 0%, rgba(201,168,76,0.12), transparent 70%);
+      opacity: 0; transition: opacity 0.35s;
+    }
+    .cat-card:hover::before { opacity: 1; }
+    .cat-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-6px); }
+    .cat-icon { font-size: 2.4rem; margin-bottom: 14px; display: block; }
+    .cat-card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 6px; }
+    .cat-card p { font-size: 0.75rem; color: var(--muted); }
+
+    /* ─── HOTELS ─── */
+    #hotels { padding: 100px 60px; background: var(--dark); }
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px; max-width: 1200px; margin: 0 auto;
+    }
+    .hotel-card {
+      background: var(--card); border-radius: 20px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .hotel-card:hover { transform: translateY(-8px); box-shadow: 0 24px 50px rgba(0,0,0,0.5); }
+    .hotel-img {
+      height: 200px; width: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem;
+      position: relative;
+    }
+    .hotel-badge {
+      position: absolute; top: 14px; left: 14px;
+      background: var(--gold); color: var(--dark);
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 1px;
+      padding: 4px 12px; border-radius: 50px;
+    }
+    .hotel-body { padding: 22px; }
+    .hotel-body h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+    .hotel-meta { display: flex; gap: 16px; color: var(--muted); font-size: 0.8rem; margin-bottom: 14px; }
+    .stars { color: var(--gold); }
+    .hotel-price { display: flex; justify-content: space-between; align-items: center; }
+    .price { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--gold); }
+    .price span { font-size: 0.8rem; color: var(--muted); font-family: 'DM Sans', sans-serif; }
+    .book-btn {
+      background: transparent; border: 1px solid var(--gold);
+      color: var(--gold); padding: 8px 20px; border-radius: 50px;
+      font-size: 0.8rem; font-weight: 600; cursor: pointer;
+      transition: all 0.25s;
+    }
+    .book-btn:hover { background: var(--gold); color: var(--dark); }
+
+    /* ─── TRAVEL ─── */
+    #travel { padding: 100px 60px; background: var(--dark2); }
+    .travel-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .travel-card {
+      border-radius: 20px; padding: 36px;
+      border: 1px solid rgba(255,255,255,0.05);
+      position: relative; overflow: hidden; cursor: pointer;
+      transition: all 0.35s;
+      display: flex; flex-direction: column; justify-content: space-between; min-height: 220px;
+    }
+    .travel-card:hover { transform: scale(1.02); }
+    .travel-card.air { background: linear-gradient(135deg, #0a1628, #1a3050); }
+    .travel-card.train { background: linear-gradient(135deg, #1a0d28, #3a1550); }
+    .travel-card.bus { background: linear-gradient(135deg, #0a2010, #1a4020); }
+    .travel-card.boat { background: linear-gradient(135deg, #001a28, #003050); }
+    .travel-card .t-icon { font-size: 3rem; margin-bottom: 14px; }
+    .travel-card h3 { font-size: 1.3rem; font-weight: 700; margin-bottom: 8px; }
+    .travel-card p { color: var(--muted); font-size: 0.88rem; line-height: 1.5; }
+    .travel-tag {
+      display: inline-block; background: rgba(201,168,76,0.15);
+      color: var(--gold); font-size: 0.72rem; letter-spacing: 1px;
+      padding: 4px 14px; border-radius: 50px; margin-top: 18px; align-self: flex-start;
+    }
+
+    /* ─── LOCAL TRAVEL ─── */
+    #local { padding: 100px 60px; background: var(--dark); }
+    .local-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px; max-width: 1100px; margin: 0 auto;
+    }
+    .local-card {
+      background: var(--card); border-radius: 20px; padding: 28px;
+      border: 1px solid rgba(255,255,255,0.05);
+      display: flex; flex-direction: column; gap: 12px;
+      transition: all 0.3s; cursor: pointer;
+    }
+    .local-card:hover { border-color: rgba(224,123,57,0.4); transform: translateY(-4px); }
+    .local-icon { font-size: 2.2rem; }
+    .local-card h3 { font-size: 1rem; font-weight: 700; }
+    .local-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+    .local-price { color: var(--accent); font-weight: 700; font-size: 0.9rem; }
+
+    /* ─── FOOD MARKET ─── */
+    #food { padding: 100px 60px; background: var(--dark2); }
+    .food-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px; max-width: 1200px; margin: 0 auto;
+    }
+    .food-card {
+      background: var(--card); border-radius: 20px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: all 0.3s;
+    }
+    .food-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+    .food-img {
+      height: 160px; display: flex; align-items: center;
+      justify-content: center; font-size: 4rem;
+      background: linear-gradient(135deg, rgba(224,123,57,0.1), rgba(201,168,76,0.1));
+    }
+    .food-body { padding: 20px; }
+    .food-body h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .food-body p { color: var(--muted); font-size: 0.8rem; margin-bottom: 14px; }
+    .food-footer { display: flex; justify-content: space-between; align-items: center; }
+    .food-rating { color: var(--gold); font-size: 0.82rem; }
+    .order-btn {
+      background: var(--accent); color: #fff;
+      border: none; padding: 7px 18px; border-radius: 50px;
+      font-size: 0.78rem; font-weight: 600; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .order-btn:hover { background: #d06020; transform: scale(1.05); }
+
+    /* ─── ATTRACTIONS ─── */
+    #attractions { padding: 100px 60px; background: var(--dark); }
+    .attract-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 20px; max-width: 1200px; margin: 0 auto;
+    }
+    .attract-card {
+      border-radius: 20px; padding: 36px 28px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: var(--card); cursor: pointer;
+      transition: all 0.3s; position: relative; overflow: hidden;
+    }
+    .attract-card.featured {
+      grid-column: span 2;
+      background: linear-gradient(135deg, #1a0a00, #2a1500);
+      border-color: rgba(201,168,76,0.2);
+    }
+    .attract-card:hover { transform: translateY(-4px); }
+    .attract-icon { font-size: 2.8rem; margin-bottom: 16px; display: block; }
+    .attract-card h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
+    .attract-card p { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+    .attract-tag {
+      margin-top: 18px; display: inline-block;
+      background: rgba(201,168,76,0.12); color: var(--gold);
+      font-size: 0.72rem; padding: 4px 14px; border-radius: 50px;
+    }
+
+    /* ─── EMERGENCY / SERVICES ─── */
+    #services { padding: 100px 60px; background: var(--dark2); }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px; max-width: 1100px; margin: 0 auto;
+    }
+    .service-card {
+      background: var(--card); border-radius: 16px; padding: 24px;
+      border: 1px solid rgba(255,255,255,0.05);
+      transition: all 0.3s; cursor: pointer; text-align: center;
+    }
+    .service-card:hover { border-color: rgba(201,168,76,0.3); transform: translateY(-4px); }
+    .service-card .s-icon { font-size: 2rem; margin-bottom: 12px; }
+    .service-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+    .service-card p { font-size: 0.78rem; color: var(--muted); }
+
+    /* ─── WEATHER WIDGET ─── */
+    #weather { padding: 80px 60px; background: var(--dark); }
+    .weather-box {
+      max-width: 800px; margin: 0 auto;
+      background: linear-gradient(135deg, #0a1a2a, #001530);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 24px; padding: 48px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+      align-items: center;
+    }
+    .weather-left h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem; margin-bottom: 8px;
+    }
+    .weather-left .city { color: var(--gold); font-size: 1rem; }
+    .temp { font-family: 'Playfair Display', serif; font-size: 5rem; font-weight: 900; color: var(--gold); }
+    .weather-details { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+    .wd-item { background: rgba(255,255,255,0.04); border-radius: 12px; padding: 14px; text-align: center; }
+    .wd-item .label { font-size: 0.7rem; color: var(--muted); letter-spacing: 1px; margin-bottom: 6px; }
+    .wd-item .val { font-size: 1rem; font-weight: 600; }
+    .weather-search { display: flex; gap: 10px; margin-top: 24px; }
+    .weather-search input {
+      flex: 1; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50px; padding: 10px 20px; color: var(--text);
+      font-family: 'DM Sans', sans-serif; outline: none;
+    }
+    .weather-search button {
+      background: var(--gold); color: var(--dark); border: none;
+      padding: 10px 20px; border-radius: 50px; font-weight: 700; cursor: pointer;
+    }
+
+    /* ─── TIPS ─── */
+    #tips { padding: 100px 60px; background: var(--dark2); }
+    .tips-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px; max-width: 1100px; margin: 0 auto;
+    }
+    .tip-card {
+      background: var(--card); border-radius: 20px; padding: 28px;
+      border-left: 4px solid var(--gold);
+      transition: all 0.3s;
+    }
+    .tip-card:hover { transform: translateX(6px); }
+    .tip-num { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: rgba(201,168,76,0.2); font-weight: 900; margin-bottom: 10px; }
+    .tip-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .tip-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #080808; padding: 60px;
+      border-top: 1px solid rgba(201,168,76,0.1);
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px; max-width: 1200px; margin: 0 auto 40px;
+    }
+    .footer-brand p { color: var(--muted); font-size: 0.85rem; margin-top: 14px; line-height: 1.7; max-width: 280px; }
+    .footer-col h4 { font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul li a { color: var(--muted); text-decoration: none; font-size: 0.85rem; transition: color 0.2s; }
+    .footer-col ul li a:hover { color: var(--text); }
+    .footer-bottom { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.05); }
+    .footer-bottom p { color: var(--muted); font-size: 0.8rem; }
+
+    /* Modal */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,0.85); align-items: center; justify-content: center;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: var(--card); border-radius: 24px; padding: 40px;
+      max-width: 480px; width: 90%; border: 1px solid rgba(201,168,76,0.2);
+      animation: fadeUp 0.3s ease;
+    }
+    .modal h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: 8px; }
+    .modal p { color: var(--muted); font-size: 0.9rem; margin-bottom: 24px; }
+    .modal-form { display: flex; flex-direction: column; gap: 14px; }
+    .modal-form input, .modal-form select {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px; padding: 12px 18px; color: var(--text);
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem; outline: none;
+    }
+    .modal-form input:focus, .modal-form select:focus { border-color: var(--gold); }
+    .modal-form select option { background: var(--dark2); }
+    .modal-actions { display: flex; gap: 12px; margin-top: 8px; }
+    .modal-close { background: transparent; border: 1px solid rgba(255,255,255,0.1); color: var(--muted); padding: 12px 24px; border-radius: 50px; cursor: pointer; flex: 1; }
+    .modal-submit { background: var(--gold); color: var(--dark); border: none; padding: 12px 24px; border-radius: 50px; font-weight: 700; cursor: pointer; flex: 2; transition: background 0.2s; }
+    .modal-submit:hover { background: var(--gold-light); }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--dark); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+
+    @media (max-width: 768px) {
+      nav { padding: 14px 20px; }
+      .nav-links { display: none; }
+      #categories, #hotels, #travel, #local, #food, #attractions, #services, #weather, #tips { padding: 60px 20px; }
+      .travel-grid { grid-template-columns: 1fr; }
+      .travel-card.featured { grid-column: span 1; }
+      .attract-grid { grid-template-columns: 1fr; }
+      .attract-card.featured { grid-column: span 1; }
+      .weather-box { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      footer { padding: 40px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Wander<span>World</span></div>
+  <ul class="nav-links">
+    <li><a href="#categories">Explore</a></li>
+    <li><a href="#hotels">Hotels</a></li>
+    <li><a href="#travel">Travel</a></li>
+    <li><a href="#food">Food</a></li>
+    <li><a href="#attractions">Attractions</a></li>
+    <li><a href="#services">Services</a></li>
+  </ul>
+  <button class="nav-cta" onclick="openModal()">Plan My Trip</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-text">TRAVEL</div>
+  <div class="hero-content">
+    <div class="hero-badge">✦ Your Ultimate Travel Companion</div>
+    <h1>Explore The World<br/>Like <em>Never Before</em></h1>
+    <p>Discover hotels, flights, local transport, food markets, attractions and everything you need for the perfect trip — all in one place.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="openModal()">Start Exploring</button>
+      <button class="btn-outline" onclick="document.getElementById('categories').scrollIntoView({behavior:'smooth'})">Browse Categories</button>
+    </div>
+    <div class="search-bar">
+      <input type="text" placeholder="Search destinations, hotels, food..." id="mainSearch" onkeydown="handleSearch(event)"/>
+      <button onclick="doSearch()">Search</button>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section id="categories">
+  <div class="section-header">
+    <div class="section-tag">✦ What Are You Looking For?</div>
+    <h2>Everything You Need</h2>
+    <p>One platform for your complete travel experience</p>
+  </div>
+  <div class="categories-grid">
+    <div class="cat-card" onclick="document.getElementById('hotels').scrollIntoView({behavior:'smooth'})">
+      <span class="cat-icon">🏨</span>
+      <h3>Hotels</h3>
+      <p>Luxury to budget stays</p>
+    </div>
+    <div class="cat-card" onclick="document.getElementById('travel').scrollIntoView({behavior:'smooth'})">
+      <span class="cat-icon">✈️</span>
+      <h3>Flights</h3>
+      <p>Domestic & international</p>
+    </div>
+    <div class="cat-card" onclick="document.getElementById('local').scrollIntoView({behavior:'smooth'})">
+      <span class="cat-icon">🚕</span>
+      <h3>Local Travel</h3>
+      <p>Cab, metro & more</p>
+    </div>
+    <div class="cat-card" onclick="document.getElementById('food').scrollIntoView({behavior:'smooth'})">
+      <span class="cat-icon">🍜</span>
+      <h3>Food Market</h3>
+      <p>Street food & dining</p>
+    </div>
+    <div class="cat-card" onclick="document.getElementById('attractions').scrollIntoView({behavior:'smooth'})">
+      <span class="cat-icon">🏛️</span>
+      <h3>Attractions</h3>
+      <p>Sights & experiences</p>
+    </div>
+    <div class="cat-card" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">
+      <span class="cat-icon">🛡️</span>
+      <h3>Services</h3>
+      <p>Currency, SIM & help</p>
+    </div>
+    <div class="cat-card" onclick="document.getElementById('weather').scrollIntoView({behavior:'smooth'})">
+      <span class="cat-icon">🌤️</span>
+      <h3>Weather</h3>
+      <p>Live destination weather</p>
+    </div>
+    <div class="cat-card" onclick="document.getElementById('tips').scrollIntoView({behavior:'smooth'})">
+      <span class="cat-icon">💡</span>
+      <h3>Travel Tips</h3>
+      <p>Insider advice</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOTELS -->
+<section id="hotels">
+  <div class="section-header">
+    <div class="section-tag">✦ Accommodations</div>
+    <h2>Find Your Perfect Stay</h2>
+    <p>From boutique hideaways to grand palaces</p>
+  </div>
+  <div class="cards-grid">
+    <div class="hotel-card">
+      <div class="hotel-img" style="background:linear-gradient(135deg,#1a2a0a,#2a4010)">
+        🏩
+        <div class="hotel-badge">⭐ Top Pick</div>
+      </div>
+      <div class="hotel-body">
+        <h3>The Grand Mahal Resort</h3>
+        <div class="hotel-meta">
+          <span>📍 Jaipur, India</span>
+          <span class="stars">★★★★★</span>
+        </div>
+        <div class="hotel-price">
+          <div class="price">₹8,500 <span>/ night</span></div>
+          <button class="book-btn" onclick="openModal()">Book Now</button>
+        </div>
+      </div>
+    </div>
+    <div class="hotel-card">
+      <div class="hotel-img" style="background:linear-gradient(135deg,#0a1a2a,#102840)">
+        🏖️
+        <div class="hotel-badge">🔥 Popular</div>
+      </div>
+      <div class="hotel-body">
+        <h3>Coastal Blue Retreat</h3>
+        <div class="hotel-meta">
+          <span>📍 Goa, India</span>
+          <span class="stars">★★★★☆</span>
+        </div>
+        <div class="hotel-price">
+          <div class="price">₹5,200 <span>/ night</span></div>
+          <button class="book-btn" onclick="openModal()">Book Now</button>
+        </div>
+      </div>
+    </div>
+    <div class="hotel-card">
+      <div class="hotel-img" style="background:linear-gradient(135deg,#1a0a1a,#30102a)">
+        🏔️
+        <div class="hotel-badge">❄️ New</div>
+      </div>
+      <div class="hotel-body">
+        <h3>Himalayan Snow Lodge</h3>
+        <div class="hotel-meta">
+          <span>📍 Manali, India</span>
+          <span class="stars">★★★★★</span>
+        </div>
+        <div class="hotel-price">
+          <div class="price">₹6,800 <span>/ night</span></div>
+          <button class="book-btn" onclick="openModal()">Book Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRAVEL OPTIONS -->
+<section id="travel">
+  <div class="section-header">
+    <div class="section-tag">✦ Get There</div>
+    <h2>Travel Your Way</h2>
+    <p>Book flights, trains, buses and cruises easily</p>
+  </div>
+  <div class="travel-grid" style="max-width:1200px;margin:0 auto">
+    <div class="travel-card air" onclick="openModal()">
+      <div>
+        <div class="t-icon">✈️</div>
+        <h3>Flights</h3>
+        <p>Compare and book domestic & international flights with the best deals and flexible dates.</p>
+      </div>
+      <span class="travel-tag">From ₹1,999 →</span>
+    </div>
+    <div class="travel-card train" onclick="openModal()">
+      <div>
+        <div class="t-icon">🚄</div>
+        <h3>Trains</h3>
+        <p>Book IRCTC trains, Vande Bharat, Rajdhani, and more across the country.</p>
+      </div>
+      <span class="travel-tag">From ₹299 →</span>
+    </div>
+    <div class="travel-card bus" onclick="openModal()">
+      <div>
+        <div class="t-icon">🚌</div>
+        <h3>Buses</h3>
+        <p>Comfortable AC and sleeper buses for intercity travel with live tracking.</p>
+      </div>
+      <span class="travel-tag">From ₹149 →</span>
+    </div>
+    <div class="travel-card boat" onclick="openModal()">
+      <div>
+        <div class="t-icon">🛳️</div>
+        <h3>Cruises & Ferries</h3>
+        <p>Sea travel, island ferries, and luxury cruise packages across India's coastlines.</p>
+      </div>
+      <span class="travel-tag">From ₹999 →</span>
+    </div>
+  </div>
+</section>
+
+<!-- LOCAL TRAVEL -->
+<section id="local">
+  <div class="section-header">
+    <div class="section-tag">✦ Move Around</div>
+    <h2>Local Transportation</h2>
+    <p>Get from A to B with ease at your destination</p>
+  </div>
+  <div class="local-grid">
+    <div class="local-card" onclick="openModal()">
+      <div class="local-icon">🚕</div>
+      <h3>Cab / Taxi</h3>
+      <p>Book local taxis and cabs instantly — airport transfers, sightseeing, and city rides.</p>
+      <div class="local-price">₹20/km onwards</div>
+    </div>
+    <div class="local-card" onclick="openModal()">
+      <div class="local-icon">🛺</div>
+      <h3>Auto Rickshaw</h3>
+      <p>Quick and affordable rides through narrow streets and busy city centres.</p>
+      <div class="local-price">₹10/km onwards</div>
+    </div>
+    <div class="local-card" onclick="openModal()">
+      <div class="local-icon">🚇</div>
+      <h3>Metro / Subway</h3>
+      <p>Fast urban transit in major cities — Delhi, Mumbai, Bangalore, Chennai and more.</p>
+      <div class="local-price">₹10 per trip</div>
+    </div>
+    <div class="local-card" onclick="openModal()">
+      <div class="local-icon">🛵</div>
+      <h3>Bike Rental</h3>
+      <p>Rent a scooter or motorcycle and explore like a local at your own pace.</p>
+      <div class="local-price">₹300/day</div>
+    </div>
+    <div class="local-card" onclick="openModal()">
+      <div class="local-icon">🚴</div>
+      <h3>Cycle Tours</h3>
+      <p>Eco-friendly city bicycle tours for sightseeing through heritage zones.</p>
+      <div class="local-price">₹150/hour</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOD MARKET -->
+<section id="food">
+  <div class="section-header">
+    <div class="section-tag">✦ Taste The World</div>
+    <h2>Food Markets & Dining</h2>
+    <p>From street food to fine dining — find your next favourite meal</p>
+  </div>
+  <div class="food-grid">
+    <div class="food-card">
+      <div class="food-img">🍛</div>
+      <div class="food-body">
+        <h3>Street Food Bazaar</h3>
+        <p>Chaat, pav bhaji, momos, dosas — the best local street food stalls near you.</p>
+        <div class="food-footer">
+          <div class="food-rating">⭐ 4.8 (2.1k reviews)</div>
+          <button class="order-btn" onclick="openModal()">Explore</button>
+        </div>
+      </div>
+    </div>
+    <div class="food-card">
+      <div class="food-img">🍕</div>
+      <div class="food-body">
+        <h3>Multi-Cuisine Restaurants</h3>
+        <p>Indian, Chinese, Italian, Thai and more — book a table or order in.</p>
+        <div class="food-footer">
+          <div class="food-rating">⭐ 4.6 (3.5k reviews)</div>
+          <button class="order-btn" onclick="openModal()">Book Table</button>
+        </div>
+      </div>
+    </div>
+    <div class="food-card">
+      <div class="food-img">☕</div>
+      <div class="food-body">
+        <h3>Cafés & Bakeries</h3>
+        <p>Cozy cafés, rooftop lounges, and artisan bakeries perfect for a leisurely break.</p>
+        <div class="food-footer">
+          <div class="food-rating">⭐ 4.7 (1.8k reviews)</div>
+          <button class="order-btn" onclick="openModal()">Find Near Me</button>
+        </div>
+      </div>
+    </div>
+    <div class="food-card">
+      <div class="food-img">🛒</div>
+      <div class="food-body">
+        <h3>Local Produce Markets</h3>
+        <p>Fresh fruits, vegetables, spices, and local groceries from morning markets.</p>
+        <div class="food-footer">
+          <div class="food-rating">⭐ 4.5 (900 reviews)</div>
+          <button class="order-btn" onclick="openModal()">View Markets</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ATTRACTIONS -->
+<section id="attractions">
+  <div class="section-header">
+    <div class="section-tag">✦ Must-See</div>
+    <h2>Top Attractions</h2>
+    <p>Hand-picked experiences you won't forget</p>
+  </div>
+  <div class="attract-grid">
+    <div class="attract-card featured" onclick="openModal()">
+      <span class="attract-icon">🏯</span>
+      <h3>Heritage & Historical Sites</h3>
+      <p>Visit UNESCO World Heritage Sites, ancient forts, temples, and monuments. Get guided tours, entry tickets, and skip-the-line passes all in one booking.</p>
+      <span class="attract-tag">50+ Sites Available</span>
+    </div>
+    <div class="attract-card" onclick="openModal()">
+      <span class="attract-icon">🌊</span>
+      <h3>Adventure Sports</h3>
+      <p>Paragliding, river rafting, scuba diving and more.</p>
+      <span class="attract-tag">Book Activities</span>
+    </div>
+    <div class="attract-card" onclick="openModal()">
+      <span class="attract-icon">🌿</span>
+      <h3>Nature & Wildlife</h3>
+      <p>National parks, tiger reserves, and jungle safaris.</p>
+      <span class="attract-tag">Safari Booking</span>
+    </div>
+    <div class="attract-card" onclick="openModal()">
+      <span class="attract-icon">🎭</span>
+      <h3>Cultural Events</h3>
+      <p>Festivals, classical dance, folk music and local fairs.</p>
+      <span class="attract-tag">View Events</span>
+    </div>
+    <div class="attract-card" onclick="openModal()">
+      <span class="attract-icon">🧘</span>
+      <h3>Wellness & Spa</h3>
+      <p>Yoga retreats, Ayurvedic spas, and meditation centres.</p>
+      <span class="attract-tag">Find Retreats</span>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-header">
+    <div class="section-tag">✦ Essentials</div>
+    <h2>Traveller Services</h2>
+    <p>Everything else you need for a smooth journey</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card" onclick="openModal()">
+      <div class="s-icon">💱</div>
+      <h3>Currency Exchange</h3>
+      <p>Live rates and nearby exchange counters</p>
+    </div>
+    <div class="service-card" onclick="openModal()">
+      <div class="s-icon">📱</div>
+      <h3>SIM & Data Plans</h3>
+      <p>Local tourist SIM cards & eSIMs</p>
+    </div>
+    <div class="service-card" onclick="openModal()">
+      <div class="s-icon">🏥</div>
+      <h3>Medical & Emergency</h3>
+      <p>Nearby hospitals, clinics & pharmacies</p>
+    </div>
+    <div class="service-card" onclick="openModal()">
+      <div class="s-icon">🛡️</div>
+      <h3>Travel Insurance</h3>
+      <p>Trip protection and health cover</p>
+    </div>
+    <div class="service-card" onclick="openModal()">
+      <div class="s-icon">🗺️</div>
+      <h3>Tour Guides</h3>
+      <p>Local certified guides for every city</p>
+    </div>
+    <div class="service-card" onclick="openModal()">
+      <div class="s-icon">🧳</div>
+      <h3>Luggage Storage</h3>
+      <p>Secure drop points at stations & airports</p>
+    </div>
+    <div class="service-card" onclick="openModal()">
+      <div class="s-icon">📸</div>
+      <h3>Photography Tours</h3>
+      <p>Professional shoot packages at top spots</p>
+    </div>
+    <div class="service-card" onclick="openModal()">
+      <div class="s-icon">🌐</div>
+      <h3>Visa Assistance</h3>
+      <p>Visa on arrival info and application help</p>
+    </div>
+  </div>
+</section>
+
+<!-- WEATHER -->
+<section id="weather">
+  <div class="section-header">
+    <div class="section-tag">✦ Live Updates</div>
+    <h2>Destination Weather</h2>
+    <p>Know before you go</p>
+  </div>
+  <div class="weather-box">
+    <div>
+      <h2>Current Weather</h2>
+      <div class="city" id="weatherCity">📍 Lucknow, India</div>
+      <div class="weather-details">
+        <div class="wd-item"><div class="label">CONDITION</div><div class="val" id="wCondition">☀️ Sunny</div></div>
+        <div class="wd-item"><div class="label">HUMIDITY</div><div class="val" id="wHumidity">62%</div></div>
+        <div class="wd-item"><div class="label">WIND</div><div class="val" id="wWind">14 km/h</div></div>
+        <div class="wd-item"><div class="label">VISIBILITY</div><div class="val" id="wVis">8 km</div></div>
+      </div>
+      <div class="weather-search">
+        <input type="text" id="cityInput" placeholder="Enter city name..." />
+        <button onclick="updateWeather()">Check</button>
+      </div>
+    </div>
+    <div style="text-align:center">
+      <div class="temp" id="wTemp">36°</div>
+      <div style="color:var(--muted);font-size:0.85rem;margin-top:8px">Feels like 39°</div>
+      <div style="font-size:4rem;margin-top:20px" id="wIcon">☀️</div>
+    </div>
+  </div>
+</section>
+
+<!-- TRAVEL TIPS -->
+<section id="tips">
+  <div class="section-header">
+    <div class="section-tag">✦ Smart Travelling</div>
+    <h2>Insider Travel Tips</h2>
+    <p>Make every trip smoother, safer and more memorable</p>
+  </div>
+  <div class="tips-grid">
+    <div class="tip-card">
+      <div class="tip-num">01</div>
+      <h3>Book in Advance</h3>
+      <p>Flights and hotels are cheapest 3–6 weeks before travel. Set price alerts and book early to save up to 40%.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-num">02</div>
+      <h3>Pack Light, Pack Smart</h3>
+      <p>Use a carry-on only when possible. Roll clothes, use packing cubes, and always keep essentials in your day bag.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-num">03</div>
+      <h3>Get a Local SIM</h3>
+      <p>Avoid roaming charges. A local prepaid SIM gives you maps, translation apps, and cheap calls throughout your trip.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-num">04</div>
+      <h3>Keep Digital Copies</h3>
+      <p>Scan your passport, tickets, and insurance. Save them to cloud storage so you always have access even if bags are lost.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-num">05</div>
+      <h3>Eat Where Locals Eat</h3>
+      <p>The best food is never in tourist zones. Follow the crowd, visit morning markets, and try roadside dhabas.</p>
+    </div>
+    <div class="tip-card">
+      <div class="tip-num">06</div>
+      <h3>Stay Insured</h3>
+      <p>Travel insurance is the best ₹500 you'll spend. It covers medical emergencies, cancellations, and lost luggage.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="nav-logo">Wander<span>World</span></div>
+      <p>Your all-in-one travel companion. Discover, plan, book, and experience the world with confidence and ease.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Explore</h4>
+      <ul>
+        <li><a href="#hotels">Hotels</a></li>
+        <li><a href="#travel">Flights</a></li>
+        <li><a href="#local">Local Travel</a></li>
+        <li><a href="#food">Food Markets</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Discover</h4>
+      <ul>
+        <li><a href="#attractions">Attractions</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#tips">Travel Tips</a></li>
+        <li><a href="#weather">Weather</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <ul>
+        <li><a href="#">Help Center</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Terms of Use</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 WanderWorld. All rights reserved. Built with ❤️ for travellers.</p>
+    <p style="color:var(--gold)">🌍 Explore the world</p>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <h3>Plan Your Trip ✈️</h3>
+    <p>Fill in your details and we'll help you find the best options.</p>
+    <div class="modal-form">
+      <input type="text" placeholder="Full Name" />
+      <input type="email" placeholder="Email Address" />
+      <input type="text" placeholder="Destination City" id="destInput"/>
+      <select>
+        <option value="">Select Service</option>
+        <option>🏨 Hotel Booking</option>
+        <option>✈️ Flight Booking</option>
+        <option>🚄 Train Booking</option>
+        <option>🚕 Local Transport</option>
+        <option>🍛 Food & Dining</option>
+        <option>🏯 Attractions & Tours</option>
+        <option>🛡️ Travel Insurance</option>
+      </select>
+      <input type="date" />
+    </div>
+    <div class="modal-actions">
+      <button class="modal-close" onclick="closeModal()">Cancel</button>
+      <button class="modal-submit" onclick="submitModal()">Find Options →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openModal() {
+    document.getElementById('modal').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('modal').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  function closeModalOutside(e) {
+    if (e.target === document.getElementById('modal')) closeModal();
+  }
+  function submitModal() {
+    alert('🎉 Your request has been submitted! We\'ll show you the best options shortly.');
+    closeModal();
+  }
+  function handleSearch(e) {
+    if (e.key === 'Enter') doSearch();
+  }
+  function doSearch() {
+    const q = document.getElementById('mainSearch').value.trim();
+    if (!q) return;
+    alert(`🔍 Searching for: "${q}"\n\nIn a full deployment, this would show live results for hotels, flights, food spots, and more!`);
+  }
+  const weatherData = {
+    'delhi': { city:'New Delhi, India', temp:'38°', cond:'☀️ Hot & Sunny', hum:'55%', wind:'18 km/h', vis:'6 km', icon:'🌞' },
+    'mumbai': { city:'Mumbai, India', temp:'32°', cond:'⛅ Partly Cloudy', hum:'78%', wind:'22 km/h', vis:'9 km', icon:'⛅' },
+    'goa': { city:'Goa, India', temp:'30°', cond:'🌊 Breezy', hum:'80%', wind:'28 km/h', vis:'12 km', icon:'🌤️' },
+    'manali': { city:'Manali, India', temp:'8°', cond:'❄️ Cold & Clear', hum:'45%', wind:'12 km/h', vis:'20 km', icon:'❄️' },
+    'jaipur': { city:'Jaipur, India', temp:'40°', cond:'☀️ Dry & Hot', hum:'30%', wind:'15 km/h', vis:'10 km', icon:'☀️' },
+  };
+  function updateWeather() {
+    const city = document.getElementById('cityInput').value.trim().toLowerCase();
+    const data = weatherData[city] || { city: city || 'Unknown City', temp:'28°', cond:'🌤️ Moderate', hum:'60%', wind:'16 km/h', vis:'8 km', icon:'🌤️' };
+    document.getElementById('weatherCity').textContent = '📍 ' + (data.city || city);
+    document.getElementById('wTemp').textContent = data.temp;
+    document.getElementById('wCondition').textContent = data.cond;
+    document.getElementById('wHumidity').textContent = data.hum;
+    document.getElementById('wWind').textContent = data.wind;
+    document.getElementById('wVis').textContent = data.vis;
+    document.getElementById('wIcon').textContent = data.icon;
+  }
+
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.cat-card, .hotel-card, .travel-card, .local-card, .food-card, .attract-card, .service-card, .tip-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
